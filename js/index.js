@@ -99,14 +99,28 @@ function validatePassword(strPsw)
     let containsNumber = false;
     let containsUppercaseLetter = false;
     let containsSpecialCharacter = false;
+    const numbers = '0123456789';
+    const uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWYXZ';
+    const specialChars = `\`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`;
 
-    for(let i = 0; i < strPsw.length; i++)
-    {
-        if(strPsw.charAt(i) >= '0' && strPsw.charAt(i) <= '9')
-        {
+    numbers.split('').some(number => {
+        if (strPsw.includes(number)) {
             containsNumber=true;
         }
-    }
-    if(containsNumber===true)
-        return true;
+    });
+
+    uppercaseChars.split('').some(uppercase => {
+        if (strPsw.includes(uppercase)) {
+            containsUppercaseLetter=true;
+        }
+    });
+
+    specialChars.split('').some(specialChar => {
+        if (strPsw.includes(specialChar)) {
+           containsSpecialCharacter=true;
+        }
+    });
+
+    return containsNumber && containsUppercaseLetter && containsSpecialCharacter;
+
 }
