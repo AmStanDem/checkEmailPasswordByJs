@@ -13,64 +13,100 @@ const btnValidate = document.getElementById('btnValidate');
 
 btnValidate.addEventListener('click', () =>
 {
+
+    /* SOLUZIONE REGEX
     let strMailError = '';
     /**
      * @type string
-     */
+
     let strEmail = userEmail.value;
 
     let strPswError = '';
     let strPsw = userPassword.value;
 
-    if (isEmpty(strEmail))
+    if (strEmail.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/))
     {
-        strMailError
+        alert('correct e-mail');
     }
+    else
+    {
+        alert('invalid e-mail');
+    }
+    if(strPsw.match("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$"))
+    {
+        alert('password valid');
+    }
+    else
+    {
+        alert('password invalid');
+    }
+    */
+    // SOLUZIONE NORMALE
 
+    let strMailError = '';
+    /**
+     * @type string
+     *
+    **/
+     let strEmail = userEmail.value;
+     let strPsw = userPassword.value;
+     if(validateEmail(strEmail))
+     {
+         alert('email valid');
+     }
+     else
+     {
+         alert('email invalid');
+     }
+     if(validatePassword(strPsw))
+     {
+         alert('password valid');
+     }
+     else
+     {
+         alert('password invalid');
+     }
 });
 
 /**
  * @param {string} strEmail
  * @type boolean
- **/
-function checkEmail(strEmail)
+ * Returns true if the email is valid.
+ */
+function validateEmail(strEmail)
 {
-    let strMailError = '';
-    if (isEmpty(strEmail))
+    if (strEmail === '')
     {
-        strMailError='Email value is empty';
         return false;
     }
-    let indexAt = strEmail.indexOf('@');
-    let pointIndex = str2.indexOf('.',indexAt);
-    if (indexAt === -1)
-    {
-        strMailError+='@ is absent';
-        return false;
-    }
-    if (pointIndex === -1)
-    {
-        strMailError+='. is absent';
-        return false;
-    }
-    let str1 = strEmail.substring(0,indexAt);
-    let str2 = strEmail.substring(indexAt,pointIndex);
-    let str3 = strEmail.substring(pointIndex,strEmail.length-1);
-    if (!str1.includes('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'))
-    {
-        strMailError='Email invalid';
-        return false;
-    }
+    let atPos = strEmail.indexOf("@");
+    let dotPos = strEmail.lastIndexOf(".");
 
+    return !(atPos < 1 || dotPos < atPos + 2 || dotPos + 2 >= strEmail.length);
 }
 
 /**
- * Check if the given string is empty or null.
- * @param {string} str
+ * @param{string} strPsw
  * @type boolean
+ * Returns true if the password respects the format.
  */
-function isEmpty(str)
+function validatePassword(strPsw)
 {
-    return !(str === '' || str === null);
+    if (strPsw === '' || strPsw.length < 6)
+    {
+        return false;
+    }
+    let containsNumber = false;
+    let containsUppercaseLetter = false;
+    let containsSpecialCharacter = false;
 
+    for(let i = 0; i < strPsw.length; i++)
+    {
+        if(strPsw.charAt(i) >= '0' && strPsw.charAt(i) <= '9')
+        {
+            containsNumber=true;
+        }
+    }
+    if(containsNumber===true)
+        return true;
 }
